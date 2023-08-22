@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
 import Button from './Button';
-// import ImgFilm from './ImgFIlm';
-import { StyleBody } from './styleBody';
-import Carrinho from '../../Pages/Carrinho';
+import { StyleBody, ContainerImg, ContainerDiv, StyleCont, StyleCheck, DivButton } from './styleBody';
+import Carrinho from '../componentsCarrinho/Carrinho';
 import { ImgFilm } from './styleBody';
 import data from './products.json'
 
@@ -31,43 +29,77 @@ export default function Body() {
 
   const handleCheckboxChange = (index) => {
     setSelectedItems((prevSelected) => {
-      if (prevSelected.includes(index)) {
-        return prevSelected.filter((item) => item !== index);
+      if (prevSelected.some((item) => item.id === index.id)) {
+        return prevSelected.filter((item) => item.id !== index.id);
       } else {
-        return [...prevSelected, index];
+        return [...prevSelected, {...index,quantity:1}];
       }
     });
   };
+
+  function addQuantity (item) {
+    setSelectedItems((prevSelected) => prevSelected.map((product)=> {
+      if (product.id === item.id){
+        return {
+          ...product, 
+          quantity:product.quantity+1
+        }
+      }
+      return product
+    }))}
+
+
+    function subtractQuantity (item) {
+      setSelectedItems((prevSelected) => prevSelected.map((product)=> {
+        if (product.id === item.id){
+          if(product.quantity>0) {
+            return {
+              ...product, 
+              quantity:product.quantity-1
+            }
+          }
+          return product
+        }
+        return product
+      }))
+    
+
+  }
 
   return (
   
     <>
       <StyleBody>
         <p>Produtos</p>
-        <p>{selectedItems.length}</p>
+        <StyleCont>
+        {selectedItems.length}
+        </StyleCont>
       </StyleBody>
       {carrinho ? 
-      <div>
+      <ContainerImg>
       {apiConsult().map((item, index) => (
-        <div key={item.id}>
+        <ContainerDiv key={item.id}>
           <ImgFilm src={item.image} name={item.value} />
-          <span>
+          <StyleCheck>
             <input
               className="Check"
               type="checkbox"
-              checked={selectedItems.includes(item)}
+              checked={selectedItems.some((i)=> i.id === item.id)}
               onChange={() => handleCheckboxChange(item)}
             />
-            {item.value}
-          </span>
-        </div>
+            Valor:R${item.value},00
+          </StyleCheck>
+        </ContainerDiv>
       ))}
-    </div>: <Carrinho products={selectedItems}/>
+    </ContainerImg>: 
+    <Carrinho products={selectedItems} addQuantity={addQuantity} 
+    subtractQuantity={subtractQuantity}/>
       }
       
-      <Button carrinho={carrinho} setCarrinho={setCarrinho} />    </>
+      <DivButton>
+        {carrinho? <Button carrinho={carrinho} setCarrinho={setCarrinho} /> : <></>   }
+         
+      </DivButton>
+      </>
   );
 }
-
-
-

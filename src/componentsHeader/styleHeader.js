@@ -4,7 +4,7 @@ export const StyleHeader = styled.div `
 background-color: #6950A1;
 color: white;
 height: 80px;
-width: 500px;
+width: 730px;
 display: flex;
 justify-content: space-around;
 

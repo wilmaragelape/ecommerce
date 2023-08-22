@@ -1,21 +1,23 @@
-import { ImagesCard } from "./styleFooter"
+import { ImagesCard, ContainerFooter, ContainerGeneral, ImagesGeneral } from "./styleFooter"
 
 export default function Footer () {
     return (
         <>
-        <div>
+        <ContainerGeneral>
+        <ContainerFooter>
             <p>
-                <b>
+                {/* <b>
                 Meios de pagamento:
-                </b>
+                </b> */}
             </p>
-            <div>
+            <ImagesGeneral>
             <ImagesCard src="./Visa.png"/>
             <ImagesCard src="./Mastercard.png"/>
             <ImagesCard src="./Boleto.png"/>
             <ImagesCard src="./Hipercard.png"/>
-            </div>
-        </div>
+            </ImagesGeneral>
+        </ContainerFooter>
+        </ContainerGeneral>
         </>
     )
 }
